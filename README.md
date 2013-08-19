@@ -23,6 +23,10 @@ Then just run the microMrp software from the root microMrp directory.
 <pre>
 $ cd microMrp
 $ node main.js
+* Interactive MicroMRP Server Shell v1.0
+micromrp> exit
+* Shutting down...
+$
 </pre>
 
 Features
