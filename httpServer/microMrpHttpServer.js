@@ -49,10 +49,10 @@ module.exports = {
 		createMaterialRequestHandler: function (material) {
 			return function (q,s) {
 				var m = new material({
-					mname: q.params.mname,
-					mdescription: q.params.mdescription,
-					munit: q.params.munit,
-					mcount: q.params.mcount
+					mname: q.body.mname,
+					mdescription: q.body.mdescription,
+					munit: q.body.munit,
+					mcount: q.body.mcount
 				});
 				m.save(function(e){
 					var json = "";
@@ -76,7 +76,7 @@ module.exports = {
 			this.fileSystem = require('fs');
 			this.router.get('/',this.rootRequestHandler(this.fileSystem));
 			this.router.get('/api/materials',this.materialsRequestHandler(this.dbConnector.schemaModels.models.material));
-			this.router.post('/api/cr/material/:mname/:mdescription/:munit/:mcount',this.createMaterialRequestHandler(this.dbConnector.schemaModels.models.material));
+			this.router.post('/api/cr/material',this.createMaterialRequestHandler(this.dbConnector.schemaModels.models.material));
 		}
 	},
 	shell: {
@@ -100,6 +100,7 @@ module.exports = {
 		this.port = 8040;
 		this.express = require('../node_modules/express');
 		this.app = this.express();
+		this.app.use(this.express.bodyParser());
 		this.app.listen(this.port);
 		this.dbConnector = dbConnector;
 		this.dbConnector.init();

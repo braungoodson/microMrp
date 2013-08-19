@@ -5,5 +5,12 @@
 	</head>
 	<body>
 		<h1>MicroMRP Portal</h1>
+		<form action="/api/cr/material" method="post">
+			<input type="text" name="mname" id="mname" value="myMaterial1"/>
+			<input type="text" name="mdescription" id="mdescription" value="This is a description of the material."/>
+			<input type="text" name="munit" id="munit" value="lbs"/>
+			<input type="text" name="mcount" id="mcount" value="100"/>
+			<input type="submit" value="create material"/>
+		</form>
 	</body>
 </html>
