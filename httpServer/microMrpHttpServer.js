@@ -24,6 +24,19 @@ module.exports = {
 				});
 			}
 		},
+		basicErrorHandler: function (q,s) {
+			return function (e) {
+				var json = "";
+				if (e) {
+					json = "{'error':'"+e+"'}";
+				} else {
+					json = "{'success':'true'}";
+				}
+				s.setHeader('Content-Type', 'text/json');
+				s.setHeader('Content-Length', json.length);
+				s.send(json);
+			}
+		},
 		materialsRequestHandler: function (material) {
 			return function (q,s) {
 				material.find(function(e,d){
@@ -46,7 +59,7 @@ module.exports = {
 				});
 			}
 		},
-		createMaterialRequestHandler: function (material) {
+		createMaterialRequestHandler: function (material,basicErrorHandler) {
 			return function (q,s) {
 				var m = new material({
 					mname: q.body.mname,
@@ -54,48 +67,24 @@ module.exports = {
 					munit: q.body.munit,
 					mcount: q.body.mcount
 				});
-				m.save(function(e){
-					var json = "";
-					if (e) {
-						json = "{'error':'"+e+"'}";
-						s.setHeader('Content-Type', 'text/json');
-						s.setHeader('Content-Length', json.length);
-						s.send(json);
-					} else {
-						json = "{'success':'true'}";
-						s.setHeader('Content-Type', 'text/json');
-						s.setHeader('Content-Length', json.length);
-						s.send(json);
-					}
-				});
+				m.save(basicErrorHandler(q,s));
 			}
 		},
-		updateMaterialByIdRequestHandler: function (material,objectId) {
+		updateMaterialByIdRequestHandler: function (material,basicErrorHandler) {
 			return function (q,s) {
-				material.findOneAndUpdate(
-					{
-						_id: objectId(q.body._id)
-					},{
+				return material.findByIdAndUpdate(q.body._id,{
 						mname: q.body.mname,
 						mdescription: q.body.mdescription,
 						munit: q.body.munit,
 						mcount: q.body.mcount
 					},
-					function (e) {
-						var json = "";
-						if (e) {
-							json = "{'error':'"+e+"'}";
-							s.setHeader('Content-Type', 'text/json');
-							s.setHeader('Content-Length', json.length);
-							s.send(json);
-						} else {
-							json = "{'success':'true'}";
-							s.setHeader('Content-Type', 'text/json');
-							s.setHeader('Content-Length', json.length);
-							s.send(json);
-						}
-					}
+					basicErrorHandler(q,s)
 				);
+			}
+		},
+		deleteMaterialById: function (material,basicErrorHandler) {
+			return function (q,s) {
+				return material.findByIdAndRemove(q.body._id,basicErrorHandler(q,s));
 			}
 		},
 		init: function (dbConnector,router) {
@@ -104,8 +93,9 @@ module.exports = {
 			this.fileSystem = require('fs');
 			this.router.get('/',this.rootRequestHandler(this.fileSystem));
 			this.router.get('/api/materials',this.materialsRequestHandler(this.dbConnector.schemaModels.models.material));
-			this.router.post('/api/cr/material',this.createMaterialRequestHandler(this.dbConnector.schemaModels.models.material));
-			this.router.put('/api/u/material',this.updateMaterialByIdRequestHandler(this.dbConnector.schemaModels.models.material,this.dbConnector.mongoose.Types.ObjectId));
+			this.router.post('/api/cr/material',this.createMaterialRequestHandler(this.dbConnector.schemaModels.models.material,this.basicErrorHandler));
+			this.router.put('/api/u/material',this.updateMaterialByIdRequestHandler(this.dbConnector.schemaModels.models.material,this.basicErrorHandler));
+			this.router.delete('/api/d/material',this.deleteMaterialById(this.dbConnector.schemaModels.models.material,this.basicErrorHandler));
 		}
 	},
 	shell: {
