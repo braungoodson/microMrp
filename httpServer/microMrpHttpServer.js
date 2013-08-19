@@ -70,6 +70,34 @@ module.exports = {
 				});
 			}
 		},
+		updateMaterialByIdRequestHandler: function (material,objectId) {
+			return function (q,s) {
+				material.findOneAndUpdate(
+					{
+						_id: objectId(q.body._id)
+					},{
+						mname: q.body.mname,
+						mdescription: q.body.mdescription,
+						munit: q.body.munit,
+						mcount: q.body.mcount
+					},
+					function (e) {
+						var json = "";
+						if (e) {
+							json = "{'error':'"+e+"'}";
+							s.setHeader('Content-Type', 'text/json');
+							s.setHeader('Content-Length', json.length);
+							s.send(json);
+						} else {
+							json = "{'success':'true'}";
+							s.setHeader('Content-Type', 'text/json');
+							s.setHeader('Content-Length', json.length);
+							s.send(json);
+						}
+					}
+				);
+			}
+		},
 		init: function (dbConnector,router) {
 			this.dbConnector = dbConnector;
 			this.router = router;
@@ -77,6 +105,7 @@ module.exports = {
 			this.router.get('/',this.rootRequestHandler(this.fileSystem));
 			this.router.get('/api/materials',this.materialsRequestHandler(this.dbConnector.schemaModels.models.material));
 			this.router.post('/api/cr/material',this.createMaterialRequestHandler(this.dbConnector.schemaModels.models.material));
+			this.router.put('/api/u/material',this.updateMaterialByIdRequestHandler(this.dbConnector.schemaModels.models.material,this.dbConnector.mongoose.Types.ObjectId));
 		}
 	},
 	shell: {
