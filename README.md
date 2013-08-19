@@ -1,7 +1,29 @@
-microMrp
+microMrp (prototype)
 ========
 
 A small, open-source, manufacturing resource planning system for workgroups.
+
+Usage
+========
+
+Create a MongoDB instance named 'microMrp' on '127.0.0.1:27017'.
+
+<pre>
+$ /path/to/mongodb/bin/mongo
+MongoDB shell version: 2.4.5
+connecting to: test
+> use microMrp
+switched to db microMrp
+> exit
+bye
+</pre>
+
+Then just run the microMrp software from the root microMrp directory.
+
+<pre>
+$ cd microMrp
+$ node main.js
+</pre>
 
 Features
 ========
