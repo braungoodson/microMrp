@@ -34,7 +34,7 @@ module.exports = {
 	},
 	materialsRequestHandler: function (material) {
 		return function (q,s) {
-			material.find(function(e,d){
+			return material.find(function(e,d){
 				var json = "";
 				if (e) {
 					json = "{'error':'"+e+"'}";

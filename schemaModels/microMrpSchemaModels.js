@@ -12,7 +12,6 @@ module.exports = {
 		init: function (mongoose) {
 			this.mongoose = mongoose;
 			this.material = new this.mongoose.Schema({
-				//mid: this.mongoose.Schema.ObjectId,
 				mname: String,
 				mdescription: String,
 				munit: String,
