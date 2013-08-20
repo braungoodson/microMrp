@@ -1,0 +1,5 @@
+curl -X GET http://127.0.0.1:8040
+curl -X GET http://127.0.0.1:8040/api/materials
+curl -X POST -d mname=myMaterial2 -d mdescription=A%20good%20description. -d munit=grams -d mcount=99 http://127.0.0.1:8040/api/cr/material
+curl -X PUT -d _id=<ObjectId> -d mname=myMaterial2 -d mdescription=Nothing. -d munit=lbs -d mcount=98 http://127.0.0.1:8040/api/u/material
+curl -X DELETE -d _id=<ObjectId> http://127.0.0.1:8040/api/d/material
