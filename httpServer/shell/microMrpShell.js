@@ -1,6 +1,6 @@
 module.exports = {
 	init: function (dbConnector) {
-		console.log("* MicroMRP Shell v1.0")
+		console.log("* Interactive MicroMRP Server Shell v1.0")
 		process.stdin.resume();
 		process.stdin.setEncoding('utf8');
 		process.stdin.on('data', function (chunk) {
