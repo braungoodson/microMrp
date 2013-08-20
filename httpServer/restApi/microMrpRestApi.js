@@ -2,21 +2,18 @@ module.exports = {
 	dbConnector: null,
 	router: null,
 	fileSystem: null,
-	rootRequestHandler: function (fileSystem) {
-		return function (q,s) {
-			fileSystem.readFile('./portal/index.html',function(e,d){
-				if (e) {
-					console.log("There was an error: " + e);
-					var body = "There was an error: " + e;
-					s.setHeader('Content-Type', 'text/plain');
-					s.setHeader('Content-Length', body.length);
-					s.send(body);
-				} else {
-					s.setHeader('Content-Type', 'text/html');
-					s.setHeader('Content-Length', d.length);
-					s.send(d);
-				}
-			});
+	rootRequestErrorHandler: function (q,s) {
+		return function (e,d) {
+			if (e) {
+				var body = "There was an error: " + e;
+				s.setHeader('Content-Type', 'text/plain');
+				s.setHeader('Content-Length', body.length);
+				s.send(body);
+			} else {
+				s.setHeader('Content-Type', 'text/html');
+				s.setHeader('Content-Length', d.length);
+				s.send(d);
+			}
 		}
 	},
 	basicErrorHandler: function (q,s) {
@@ -32,37 +29,41 @@ module.exports = {
 			s.send(json);
 		}
 	},
-	materialsRequestHandler: function (material) {
+	materialsRequestErrorHandler: function(q,s) {
+		return function(e,d){
+			var json = "";
+			if (e) {
+				json = "{'error':'"+e+"'}";
+			} else {
+				json = "{'materials':[";
+				d.forEach(function(m){
+					json += "{'_id':'"+m._id+"','mname':'"+m.mname+"','mdescription':'"+m.mdescription+"','munit':'"+m.munit+"','mcount':'"+m.mcount+"'}";
+				});
+				json += "]}";
+			}
+			s.setHeader('Content-Type','text/json');
+			s.setHeader('Content-Length',json.length);
+			s.send(json);
+		}
+	},
+	rootRequestHandler: function (fileSystem,rootRequestErrorHandler) {
 		return function (q,s) {
-			return material.find(function(e,d){
-				var json = "";
-				if (e) {
-					json = "{'error':'"+e+"'}";
-					s.setHeader('Content-Type','text/json');
-					s.setHeader('Content-Length',json.length);
-					s.send(json);
-				} else {
-					json = "{'materials':[";
-					d.forEach(function(m){
-						json += "{'_id':'"+m._id+"','mname':'"+m.mname+"','mdescription':'"+m.mdescription+"','munit':'"+m.munit+"','mcount':'"+m.mcount+"'}";
-					});
-					json += "]}";
-					s.setHeader('Content-Type','text/json');
-					s.setHeader('Content-Length',json.length);
-					s.send(json);
-				}
-			});
+			return fileSystem.readFile('./portal/index.html',rootRequestErrorHandler(q,s));
+		}
+	},
+	materialsRequestHandler: function (material,materialsRequestErrorHandler) {
+		return function (q,s) {
+			return material.find(materialsRequestErrorHandler(q,s));
 		}
 	},
 	createMaterialRequestHandler: function (material,basicErrorHandler) {
 		return function (q,s) {
-			var m = new material({
+			return new material({
 				mname: q.body.mname,
 				mdescription: q.body.mdescription,
 				munit: q.body.munit,
 				mcount: q.body.mcount
-			});
-			m.save(basicErrorHandler(q,s));
+			}).save(basicErrorHandler(q,s));
 		}
 	},
 	updateMaterialByIdRequestHandler: function (material,basicErrorHandler) {
@@ -86,8 +87,8 @@ module.exports = {
 		this.dbConnector = dbConnector;
 		this.router = router;
 		this.fileSystem = require('fs');
-		this.router.get('/',this.rootRequestHandler(this.fileSystem));
-		this.router.get('/api/materials',this.materialsRequestHandler(this.dbConnector.schemaModels.models.material));
+		this.router.get('/',this.rootRequestHandler(this.fileSystem,this.rootRequestErrorHandler));
+		this.router.get('/api/materials',this.materialsRequestHandler(this.dbConnector.schemaModels.models.material,this.materialsRequestErrorHandler));
 		this.router.post('/api/cr/material',this.createMaterialRequestHandler(this.dbConnector.schemaModels.models.material,this.basicErrorHandler));
 		this.router.put('/api/u/material',this.updateMaterialByIdRequestHandler(this.dbConnector.schemaModels.models.material,this.basicErrorHandler));
 		this.router.delete('/api/d/material',this.deleteMaterialById(this.dbConnector.schemaModels.models.material,this.basicErrorHandler));
