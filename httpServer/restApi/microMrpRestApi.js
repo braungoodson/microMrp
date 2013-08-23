@@ -9,14 +9,14 @@ module.exports = {
 		this.fileSystem = require('fs');
 		this.requestHandlers = require('./requestHandlers/microMrpRestApiRequestHandlers');
 		this.router.get('/',
-			this.requestHandlers.rootRequestHandler(
+			this.requestHandlers.portalRequestHandler(
 				this.fileSystem,
-				this.requestHandlers.rootRequestErrorHandler
+				this.requestHandlers.portalRequestErrorHandler
 		));
-		this.router.get('/api/materials',
-			this.requestHandlers.materialsRequestHandler(
+		this.router.get('/api/r/materials',
+			this.requestHandlers.readMaterialsRequestHandler(
 				this.dbConnector.schemaModels.models.material,
-				this.requestHandlers.materialsRequestErrorHandler
+				this.requestHandlers.readMaterialsRequestErrorHandler
 		));
 		this.router.post('/api/cr/material',
 			this.requestHandlers.createMaterialRequestHandler(

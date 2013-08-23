@@ -1,5 +1,5 @@
 module.exports = {
-	rootRequestErrorHandler: function (q,s) {
+	portalRequestErrorHandler: function (q,s) {
 		return function (e,d) {
 			if (e) {
 				var body = "There was an error: " + e;
@@ -11,6 +11,11 @@ module.exports = {
 				s.setHeader('Content-Length', d.length);
 				s.send(d);
 			}
+		}
+	},
+	portalRequestHandler: function (fileSystem,portalRequestErrorHandler) {
+		return function (q,s) {
+			return fileSystem.readFile('./portal/index.html',portalRequestErrorHandler(q,s));
 		}
 	},
 	basicErrorHandler: function (q,s) {
@@ -26,7 +31,7 @@ module.exports = {
 			s.send(json);
 		}
 	},
-	materialsRequestErrorHandler: function(q,s) {
+	readMaterialsRequestErrorHandler: function(q,s) {
 		return function(e,d){
 			var json = "";
 			if (e) {
@@ -43,14 +48,9 @@ module.exports = {
 			s.send(json);
 		}
 	},
-	rootRequestHandler: function (fileSystem,rootRequestErrorHandler) {
+	readMaterialsRequestHandler: function (material,readMaterialsRequestErrorHandler) {
 		return function (q,s) {
-			return fileSystem.readFile('./portal/index.html',rootRequestErrorHandler(q,s));
-		}
-	},
-	materialsRequestHandler: function (material,materialsRequestErrorHandler) {
-		return function (q,s) {
-			return material.find(materialsRequestErrorHandler(q,s));
+			return material.find(readMaterialsRequestErrorHandler(q,s));
 		}
 	},
 	createMaterialRequestHandler: function (material,basicErrorHandler) {
