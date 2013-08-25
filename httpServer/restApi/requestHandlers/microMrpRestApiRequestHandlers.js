@@ -3,31 +3,31 @@ module.exports = {
 		return function (e,d) {
 			if (e) {
 				var body = "There was an error: " + e;
-				s.setHeader('Content-Type', 'text/plain');
-				s.setHeader('Content-Length', body.length);
+				s.setHeader("Content-Type", "text/plain");
+				s.setHeader("Content-Length", body.length);
 				s.send(body);
 			} else {
-				s.setHeader('Content-Type', 'text/html');
-				s.setHeader('Content-Length', d.length);
+				s.setHeader("Content-Type", "text/html");
+				s.setHeader("Content-Length", d.length);
 				s.send(d);
 			}
 		}
 	},
 	portalRequestHandler: function (fileSystem,portalRequestErrorHandler) {
 		return function (q,s) {
-			return fileSystem.readFile('./portal/index.html',portalRequestErrorHandler(q,s));
+			return fileSystem.readFile("./portal/index.html",portalRequestErrorHandler(q,s));
 		}
 	},
 	basicErrorHandler: function (q,s) {
 		return function (e) {
 			var json = "";
 			if (e) {
-				json = "{'error':'"+e+"'}";
+				json = "{\"error\":\""+e+"\"}";
 			} else {
-				json = "{'success':'true'}";
+				json = "{\"success\":\"true\"}";
 			}
-			s.setHeader('Content-Type', 'text/json');
-			s.setHeader('Content-Length', json.length);
+			s.setHeader("Content-Type", "text/json");
+			s.setHeader("Content-Length", json.length);
 			s.send(json);
 		}
 	},
@@ -35,16 +35,16 @@ module.exports = {
 		return function(e,d){
 			var json = "";
 			if (e) {
-				json = "{'error':'"+e+"'}";
+				json = "{\"error\":\""+e+"\"}";
 			} else {
-				json = "{'materials':[";
+				json = "{\"materials\":[";
 				d.forEach(function(m){
-					json += "{'_id':'"+m._id+"','mname':'"+m.mname+"','mdescription':'"+m.mdescription+"','munit':'"+m.munit+"','mcount':'"+m.mcount+"'}";
+					json += "{ \"_id\" : \""+m._id+"\" , \"mname\" : \""+m.mname+"\" , \"mdescription\" : \""+m.mdescription+"\" , \"munit\" : \""+m.munit+"\" , \"mcount\" : \""+m.mcount+"\" },";
 				});
-				json += "]}";
+				json += "{}]}";
 			}
-			s.setHeader('Content-Type','text/json');
-			s.setHeader('Content-Length',json.length);
+			s.setHeader("Content-Type","text/json");
+			s.setHeader("Content-Length",json.length);
 			s.send(json);
 		}
 	},
