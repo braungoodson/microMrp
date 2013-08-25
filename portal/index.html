@@ -17,8 +17,8 @@
 		})
 		.controller('createMaterialController',function ($scope,$http) {
 			$scope.createMaterial = function () {
-				var m = $scope;
-				$http.post('/api/c/material').success(function (d) {
+				$http.post('/api/c/material',angular.toJson({mname:$scope.mname,mdescription:$scope.mdescription,munit:$scope.munit,mcount:$scope.mcount}))
+				.success(function (d) {
 					console.log(d);
 				});
 			}
