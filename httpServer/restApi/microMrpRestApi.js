@@ -18,7 +18,7 @@ module.exports = {
 				this.dbConnector.schemaModels.models.material,
 				this.requestHandlers.readMaterialsRequestErrorHandler
 		));
-		this.router.post('/api/cr/material',
+		this.router.post('/api/c/material',
 			this.requestHandlers.createMaterialRequestHandler(
 				this.dbConnector.schemaModels.models.material,
 				this.requestHandlers.basicErrorHandler

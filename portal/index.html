@@ -9,18 +9,34 @@
 	<!-- MicroMRP Angular.js Partner Portal -->
 	<script>
 	var app = angular.module('angularjsPartnerPortal',[])
-		.controller('homeController',function ($scope,$http) {
-			$scope.title = "Home Page";
+		.controller('readMaterialsController',function ($scope,$http) {
+			$scope.title = "mname";
 			$http.get('/api/r/materials').success(function(d){
 				$scope.materials = d.materials;
 			});
+		})
+		.controller('createMaterialController',function ($scope,$http) {
+			$scope.createMaterial = function () {
+				var m = $scope;
+				$http.post('/api/c/material').success(function (d) {
+					console.log(d);
+				});
+			}
 		});
 	</script>
-	<div data-ng-controller="homeController">
+	<div data-ng-controller="readMaterialsController">
 		Name: <input type="text" data-ng-model="filter.mname"/><br/>
 		<ul>
 			<li data-ng-repeat="m in materials | filter:filter.mname">{{m.mname}}</li>
 		</ul>
+	</div>
+	<div data-ng-controller="createMaterialController">
+		Name: <input type="text" data-ng-model="mname" value="carbon"/><br/>
+		Description: <input type="text" data-ng-model="mdescription" value="Carbon is a basic element."/><br/>
+		Unit: <input type="text" data-ng-model="munit" value="liters"/><br/>
+		Count: <input type="text" data-ng-model="mcount" value="19878"/><br/>
+		<input type="button" data-ng-click="createMaterial()" value="Create"/>
+		<input data-ng-model="sudoCheckBox" type="checkbox" value="sudo"/>*Must be checked
 	</div>
 </body>
 </html>
