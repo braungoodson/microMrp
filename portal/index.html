@@ -11,13 +11,16 @@
 	var app = angular.module('angularjsPartnerPortal',[])
 		.controller('homeController',function ($scope,$http) {
 			$scope.title = "Home Page";
-			$http.get('/api/r/materials').success(function(e,d){
-				console.log(d);
+			$http.get('/api/r/materials').success(function(d){
+				$scope.materials = d.materials;
 			});
 		});
 	</script>
 	<div data-ng-controller="homeController">
-		{{title}}
+		Name: <input type="text" data-ng-model="filter.mname"/><br/>
+		<ul>
+			<li data-ng-repeat="m in materials | filter:filter.mname">{{m.mname}}</li>
+		</ul>
 	</div>
 </body>
 </html>

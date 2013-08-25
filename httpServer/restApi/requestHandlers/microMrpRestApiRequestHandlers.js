@@ -39,7 +39,7 @@ module.exports = {
 			} else {
 				json = "{\"materials\":[";
 				d.forEach(function(m){
-					json += "{ \"_id\" : \""+m._id+"\" , \"mname\" : \""+m.mname+"\" , \"mdescription\" : \""+m.mdescription+"\" , \"munit\" : \""+m.munit+"\" , \"mcount\" : \""+m.mcount+"\" },";
+					json += "{ \"id\" : \""+m._id+"\" , \"mname\" : \""+m.mname+"\" , \"mdescription\" : \""+m.mdescription+"\" , \"munit\" : \""+m.munit+"\" , \"mcount\" : \""+m.mcount+"\" },";
 				});
 				json += "{}]}";
 			}
