@@ -24,19 +24,40 @@
 			}
 		});
 	</script>
-	<div data-ng-controller="readMaterialsController">
-		Name: <input type="text" data-ng-model="filter.mname"/><br/>
-		<ul>
-			<li data-ng-repeat="m in materials | filter:filter.mname">{{m.mname}}</li>
-		</ul>
+	<div style="float:left;border:1px solid black;border-radius:10px;padding-left:10px;padding-bottom:15px;width:300px;margin-right:15px;">
+		<h1>Materials CRUD</h1>
+		<div data-ng-controller="readMaterialsController">
+			Name: <input type="text" data-ng-model="filter.mname"/><br/>
+			<ul>
+				<li data-ng-repeat="m in materials | filter:filter.mname">{{m.mname}} @ {{m.mcount}}{{m.munit}}</li>
+			</ul>
+		</div>
+		<div data-ng-controller="createMaterialController">
+			Name: <input type="text" data-ng-model="mname" value="carbon"/><br/>
+			Description: <input type="text" data-ng-model="mdescription" value="Carbon is a basic element."/><br/>
+			Unit: <input type="text" data-ng-model="munit" value="liters"/><br/>
+			Count: <input type="text" data-ng-model="mcount" value="19878"/><br/>
+			<input type="button" data-ng-click="createMaterial()" value="Create"/>
+			<input data-ng-model="sudoCheckBox" type="checkbox" value="sudo"/>*Must be checked
+		</div>
 	</div>
-	<div data-ng-controller="createMaterialController">
-		Name: <input type="text" data-ng-model="mname" value="carbon"/><br/>
-		Description: <input type="text" data-ng-model="mdescription" value="Carbon is a basic element."/><br/>
-		Unit: <input type="text" data-ng-model="munit" value="liters"/><br/>
-		Count: <input type="text" data-ng-model="mcount" value="19878"/><br/>
-		<input type="button" data-ng-click="createMaterial()" value="Create"/>
-		<input data-ng-model="sudoCheckBox" type="checkbox" value="sudo"/>*Must be checked
+
+	<div style="float:left;border:1px solid black;border-radius:10px;padding-left:10px;padding-bottom:15px;width:300px;margin-right:15px;">
+		<h1>Materials CRUD</h1>
+		<div data-ng-controller="readMaterialsController">
+			Name: <input type="text" data-ng-model="filter.mname"/><br/>
+			<ul>
+				<li data-ng-repeat="m in materials | filter:filter.mname">{{m.mname}} @ {{m.mcount}}{{m.munit}}</li>
+			</ul>
+		</div>
+		<div data-ng-controller="createMaterialController">
+			Name: <input type="text" data-ng-model="mname" value="carbon"/><br/>
+			Description: <input type="text" data-ng-model="mdescription" value="Carbon is a basic element."/><br/>
+			Unit: <input type="text" data-ng-model="munit" value="liters"/><br/>
+			Count: <input type="text" data-ng-model="mcount" value="19878"/><br/>
+			<input type="button" data-ng-click="createMaterial()" value="Create"/>
+			<input data-ng-model="sudoCheckBox" type="checkbox" value="sudo"/>*Must be checked
+		</div>
 	</div>
 </body>
 </html>
