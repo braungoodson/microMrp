@@ -3,7 +3,8 @@
 <head>
 	<title>Angular.js Partner Portal</title>
 	<style>
-	.crudWidget{float:left;border:1px solid black;border-radius:10px;padding-left:10px;padding-bottom:15px;width:300px;margin-left:15px;}
+	.crudController{float:left;border:1px solid black;border-radius:10px;padding:10px;margin-left:10px;}
+	.crudWidget{border:1px solid black;border-radius:10px;padding:10px;width:300px;margin:5px;}
 	</style>
 </head>
 <body>
@@ -13,6 +14,25 @@
 	<!-- MicroMRP Angular.js Partner Portal -->
 	<script>
 	var app = angular.module('angularjsPartnerPortal',[])
+	.controller('materialsController',function ($scope,$http) {
+		$scope.createMaterials = function () {
+			var data = angular.toJson({mname:$scope.mname,mdescription:$scope.mdescription,munit:$scope.munit,mcount:$scope.mcount});
+			$http.post('/api/c/material',data).success(function (d) {
+				// handle successful creation
+			});
+		}
+		$scope.readMaterials = function () {
+			$http.get('/api/r/materials').success(function (d) {
+				$scope.materials = d.materials;
+			});
+		}
+		$scope.updateMaterials = function () {
+
+		}	
+		$scope.deleteMaterials = function () {
+
+		}
+	});/*
 		.controller('readMaterialsController',function ($scope,$http) {
 			$scope.readMaterials = function () {
 				$http.get('/api/r/materials').success(function (d) {
@@ -29,45 +49,26 @@
 					
 				});
 			}
-		});
+		});*/
 	</script>
-	<!-- Widgets -->
-	<div>
-		<!-- Reading Widget -->
+	<div class="crudController" data-ng-controller="materialsController">
+		<h1>Crud Controller</h1>
 		<div class="crudWidget">
-			<h1>Read</h1>
-			<div data-ng-controller="readMaterialsController">
-				Name: <input type="text" data-ng-model="filter.mname"/><input type="button" data-ng-click="readMaterials()" value="get"/><br/>
-				<ul>
-					<li data-ng-repeat="m in materials | filter:filter.mname">{{m.mname}} @ {{m.mcount}}{{m.munit}}</li>
-				</ul>
-			</div>
+			<h3>Create</h3>
+			Name: <input type="text" data-ng-model="mname"/><br/>
+			Description: <input type="text" data-ng-model="mdescription"/><br/>
+			Unit: <input type="text" data-ng-model="munit"/><br/>
+			Count: <input type="text" data-ng-model="mcount"/><br/>
+			<input type="button" data-ng-click="createMaterial()" value="Create"/>
+			<input data-ng-model="sudoCheckBox" type="checkbox" value="sudo"/>*Must be checked
 		</div>
-		<!-- Reading Widget -->
-		<!--
 		<div class="crudWidget">
-			<h1>Read</h1>
-			<div data-ng-controller="readMaterialsController">
-				Name: <input type="text" data-ng-model="filter.mcount"/><input type="button" data-ng-click="readMaterials()" value="get"/><br/>
-				<ul>
-					<li data-ng-repeat="m in materials | filter:filter.mcount">{{m.mcount}}{{m.munit}} of {{m.mname}}</li>
-				</ul>
-			</div>
-		</div>
-		-->
-		<!-- Creating Widget -->
-		<div class="crudWidget">
-			<h1>Create</h1>
-			<div data-ng-controller="createMaterialController">
-				Name: <input type="text" data-ng-model="mname"/><br/>
-				Description: <input type="text" data-ng-model="mdescription"/><br/>
-				Unit: <input type="text" data-ng-model="munit"/><br/>
-				Count: <input type="text" data-ng-model="mcount"/><br/>
-				<input type="button" data-ng-click="createMaterial()" value="Create"/>
-				<input data-ng-model="sudoCheckBox" type="checkbox" value="sudo"/>*Must be checked
-			</div>
+			<h3>Read</h3>
+			Name: <input type="text" data-ng-model="filter.mname"/><input type="button" data-ng-click="readMaterials()" value="get"/><br/>
+			<ul>
+				<li data-ng-repeat="m in materials | filter:filter.mname">{{m.mname}} @ {{m.mcount}}{{m.munit}}</li>
+			</ul>
 		</div>
 	</div>
-	<!-- End Widgets -->
 </body>
 </html>
