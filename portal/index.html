@@ -2,9 +2,35 @@
 <html data-ng-app="angularjsPartnerPortal">
 <head>
 	<title>Angular.js Partner Portal</title>
+	<link href='http://fonts.googleapis.com/css?family=Raleway:900' rel='stylesheet' type='text/css'/>
 	<style>
-	.crudController{float:left;border:1px solid black;border-radius:10px;padding:10px;margin-left:10px;}
-	.crudWidget{border:1px solid black;border-radius:10px;padding:10px;width:300px;margin:5px;}
+	.crudController {border:1px solid black;border-radius:10px;padding:10px;margin:10px;}
+	.crudWidget {border:1px solid black;border-radius:10px;padding:10px;width:500px;margin:5px;}
+	table {width:100%;border-spacing:0;table-layout:fixed}
+	td {padding:0px;width:33%;}
+	/*table, tr, td {border:1px solid red;}*/
+	body {margin:0px;font-family:'Raleway',sans-serif;font-weight:bolder;}
+	.topRow {height:75px;background-color:black;color:white;}
+	#leftCell {font-size:40px;font-style:italic;}
+	#middleCell {}
+	#rightCell {padding-right:25px;}
+	input[type="text"] {margin:1px;background-color:grey;border:1px solid grey;color:white;width:200px;border-radius:5px;font-size:14px;padding:4px;margin-top:10px;}
+	intput:focus {background-color:#999999;outline-width:0px;}
+	#middleRow {background-color:#EDF1F5;}
+	div#background {font-size:200px;position:relative;color:#ddd;z-index:2;top:-710px;left:25px;}
+	#crudStage {font-size:30px;width:700px;margin-top:50px;color:#666666;}
+	.big {width: 200px;height: 200px;left:-150px;top:200px;}
+	.bigger {width: 300px;height: 300px;top:-98px;left:175px;z-index:1;}
+	.biggerr {width: 400px;height: 400px;top:-497px;left:20px;}
+	.circle {
+		position:relative;
+		border-radius: 50%;
+		background-color:purple;
+		background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, purple 0%, blue 100%, red 95%);
+		background-image: -webkit-radial-gradient(45px 45px, circle cover, purple, blue);
+		background-image: radial-gradient(45px 45px 45deg, circle cover, purple 0%, blue 100%, red 95%);
+	}
+	#description {position:relative;top:-700px;}
 	</style>
 </head>
 <body>
@@ -32,43 +58,56 @@
 		$scope.deleteMaterials = function () {
 
 		}
-	});/*
-		.controller('readMaterialsController',function ($scope,$http) {
-			$scope.readMaterials = function () {
-				$http.get('/api/r/materials').success(function (d) {
-					$scope.materials = d.materials;
-				});
-			}
-			$scope.title = "mname";
-			$scope.readMaterials();
-		})
-		.controller('createMaterialController',function ($scope,$http) {
-			$scope.createMaterial = function () {
-				var data = angular.toJson({mname:$scope.mname,mdescription:$scope.mdescription,munit:$scope.munit,mcount:$scope.mcount});
-				$http.post('/api/c/material',data).success(function (d) {
-					
-				});
-			}
-		});*/
+	});
 	</script>
-	<div class="crudController" data-ng-controller="materialsController">
-		<h1>Crud Controller</h1>
-		<div class="crudWidget">
-			<h3>Create</h3>
-			Name: <input type="text" data-ng-model="mname"/><br/>
-			Description: <input type="text" data-ng-model="mdescription"/><br/>
-			Unit: <input type="text" data-ng-model="munit"/><br/>
-			Count: <input type="text" data-ng-model="mcount"/><br/>
-			<input type="button" data-ng-click="createMaterial()" value="Create"/>
-			<input data-ng-model="sudoCheckBox" type="checkbox" value="sudo"/>*Must be checked
-		</div>
-		<div class="crudWidget">
-			<h3>Read</h3>
-			Name: <input type="text" data-ng-model="filter.mname"/><input type="button" data-ng-click="readMaterials()" value="get"/><br/>
-			<ul>
-				<li data-ng-repeat="m in materials | filter:filter.mname">{{m.mname}} @ {{m.mcount}}{{m.munit}}</li>
-			</ul>
-		</div>
-	</div>
+	<table>
+	        <tr>
+	                <td>
+	                        <div>
+	                        <table>
+	                                <tr>
+	                                        <td class="topRow" id="leftCell" align="center">crudUi</td>
+	                                        <td class="topRow" id="middleCell" align="center">Browse&nbsp;<input type="text"/></td>
+	                                        <td class="topRow" id="rightCell" align="right">3</td>
+	                                </tr>
+	                        </table>
+	                        </div>
+	                </td>
+	        </tr>
+	        <tr>
+	                <td>
+	                	<center><center id="crudStage">
+                			<div class="circle big"></div>
+							<div class="circle bigger"></div>
+							<div class="circle biggerr"></div>
+							<div id="background">crudUi</div>
+	                		<div id="description">CELEBRATE THE ESSENCE OF CREATION AND DESTRUCTION TO FIND THE ULTIMATE IN WEB WARE.</div>
+	                	</center></center>
+	                	<!--
+                        <div id="middleRow">
+							<div class="crudController" data-ng-controller="materialsController">
+								<h1>Crud Controller</h1>
+								<div class="crudWidget">
+									<h3>Create</h3>
+									Name: <input type="text" data-ng-model="mname"/><br/>
+									Description: <input type="text" data-ng-model="mdescription"/><br/>
+									Unit: <input type="text" data-ng-model="munit"/><br/>
+									Count: <input type="text" data-ng-model="mcount"/><br/>
+									<input type="button" data-ng-click="createMaterial()" value="Create"/>
+									<input data-ng-model="sudoCheckBox" type="checkbox" value="sudo"/>*Must be checked
+								</div>
+								<div class="crudWidget">
+									<h3>Read</h3>
+									Name: <input type="text" data-ng-model="filter.mname"/><input type="button" data-ng-click="readMaterials()" value="get"/><br/>
+									<ul>
+										<li data-ng-repeat="m in materials | filter:filter.mname">{{m.mname}} @ {{m.mcount}}{{m.munit}}</li>
+									</ul>
+								</div>
+							</div>
+                        </div>
+                    -->
+	                </td>
+	        </tr>
+	</table>
 </body>
 </html>
