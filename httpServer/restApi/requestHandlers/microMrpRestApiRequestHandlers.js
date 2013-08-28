@@ -31,13 +31,13 @@ module.exports = {
 			s.send(json);
 		}
 	},
-	readMaterialsRequestErrorHandler: function(q,s) {
+	readMaterialRequestErrorHandler: function(q,s) {
 		return function(e,d){
 			var json = "";
 			if (e) {
 				json = "{\"error\":\""+e+"\"}";
 			} else {
-				json = "{\"materials\":[";
+				json = "{\"material\":[";
 				d.forEach(function(m){
 					json += "{ \"id\" : \""+m._id+"\" , \"mname\" : \""+m.mname+"\" , \"mdescription\" : \""+m.mdescription+"\" , \"munit\" : \""+m.munit+"\" , \"mcount\" : \""+m.mcount+"\" },";
 				});
@@ -48,9 +48,9 @@ module.exports = {
 			s.send(json);
 		}
 	},
-	readMaterialsRequestHandler: function (material,readMaterialsRequestErrorHandler) {
+	readMaterialRequestHandler: function (material,readMaterialRequestErrorHandler) {
 		return function (q,s) {
-			return material.find(readMaterialsRequestErrorHandler(q,s));
+			return material.find(readMaterialRequestErrorHandler(q,s));
 		}
 	},
 	createMaterialRequestHandler: function (material,basicErrorHandler) {
