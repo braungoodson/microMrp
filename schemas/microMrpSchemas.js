@@ -15,5 +15,11 @@ module.exports = {
 			munit: String,
 			mcount: Number
 		});
+		this.part = new this.mongoose.Schema({
+			pname: String,
+			pdescription: String,
+			pcount: Number,
+			pmaterial: [{material:this.mongoose.Schema.Types.ObjectId,mcount:Number}]
+		});
 	}
 }

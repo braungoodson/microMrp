@@ -79,5 +79,27 @@ module.exports = {
 		return function (q,s) {
 			return material.findByIdAndRemove(q.body._id,basicErrorHandler(q,s));
 		}
+	},
+	readPartRequestErrorHandler: function(q,s) {
+		return function(e,d){
+			var json = "";
+			if (e) {
+				json = "{\"error\":\""+e+"\"}";
+			} else {
+				json = "{\"part\":[";
+				d.forEach(function(p){
+					json += "{ \"id\" : \""+p._id+"\" , \"pname\" : \""+p.pname+"\" , \"pdescription\" : \""+p.pdescription+"\" , \"pmaterial\" : \""+p.pmaterial+"\" , \"pcount\" : \""+m.mcount+"\" },";
+				});
+				json += "{}]}";
+			}
+			s.setHeader("Content-Type","text/json");
+			s.setHeader("Content-Length",json.length);
+			s.send(json);
+		}
+	},
+	readPartRequestHandler: function (part,readPartRequestErrorHandler) {
+		return function (q,s) {
+			return part.find(readPartRequestErrorHandler(q,s));
+		}
 	}
 }

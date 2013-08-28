@@ -13,30 +13,43 @@ module.exports = {
 			this.requestHandlers.portalRequestHandler(
 				this.fileSystem,
 				this.requestHandlers.portalRequestErrorHandler
-		));
+			)
+		);
+		//
 		// read material table
 		this.router.get('/api/r/material',
 			this.requestHandlers.readMaterialRequestHandler(
 				this.dbConnector.models.material,
 				this.requestHandlers.readMaterialRequestErrorHandler
-		));
+			)
+		);
 		// create a material
 		this.router.post('/api/c/material',
 			this.requestHandlers.createMaterialRequestHandler(
 				this.dbConnector.models.material,
 				this.requestHandlers.basicErrorHandler
-		));
+			)
+		);
 		// update a material
 		this.router.put('/api/u/material',
 			this.requestHandlers.updateMaterialByIdRequestHandler(
 				this.dbConnector.models.material,
 				this.requestHandlers.basicErrorHandler
-		));
+			)
+		);
 		// delete a material
 		this.router.delete('/api/d/material',
 			this.requestHandlers.deleteMaterialById(
 				this.dbConnector.models.material,
 				this.requestHandlers.basicErrorHandler
-		));
+			)
+		);
+		// read part table
+		this.router.get('/api/r/part',
+			this.requestHandlers.readPartRequestHandler(
+				this.dbConnector.models.part,
+				this.requestHandlers.portalRequestErrorHandler
+			)
+		);
 	}
 }
